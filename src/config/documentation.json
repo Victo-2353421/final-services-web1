@@ -1,9 +1,9 @@
 {
     "openapi": "3.1.0",
     "info" : {
-        "title": "Application liste de tâches",
+        "title": "API liste de tâches",
         "summary": "Une application permettant de simplifier sa gestion de tâches",
-        "description": "Une description plus détaillé de ce que fait votre API",
+        "description": "Mon API de liste de tâches est un projet réalisé dans le cadre du cours de services web au cégep parce que je veux passer mes cours.",
         "contact": {
             "name": "API Support",
             "url": "https://www.jaiPasDeContactAOffrir.com/support",
@@ -13,11 +13,7 @@
     },
     "servers": [
         {
-            "url": "http://localhost:3000/",
-            "description": "Serveur de développement"
-        },
-        {
-            "url": "http://api.il-sera-pas-en-ligne.ca",
+            "url": "https://final-services-web1.onrender.com",
             "description": "Serveur en ligne"
         }
     ],
