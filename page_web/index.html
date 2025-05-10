@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="fr-CA">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script defer src="script.js"></script>
+    <style>
+        .titre {
+            text-align: center;
+        }
+        .invisible{
+            display: none;
+        }
+        .contenu {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        .contenu form div {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            justify-content: space-between;
+        }
+    </style>
+    <title>Liste de tâches</title>
+</head>
+<body>
+    <h1 class="titre">Épreuve finale - services web H25</h1>
+    <p class="titre">Morgan Boissonneault</p>
+    <div class="contenu">
+        <form id="form-compte" method="post" action="http://127.0.0.1:3030/api/inscription">
+            <h2>Création de l'utilisateur</h2>
+            <div>
+                <label for="prenom">Prénom</label>
+                <input type="text" name="prenom" id="prenom" placeholder="Votre prénom">
+            </div>
+            <div>
+                <label for="nom">Nom</label>
+                <input type="text" name="nom" id="nom" placeholder="Votre nom">
+            </div>
+            <div>
+                <label for="courriel">Courriel</label>
+                <input type="email" name="courriel" id="courriel" placeholder="Votre courriel">
+            </div>
+            <div>
+                <label for="mdp">Mot de passe</label>
+                <input type="password" name="mdp" id="mdp" placeholder="*******">
+            </div>
+            <div>
+                <button>Créer</button>
+            </div>
+
+        </form>
+        <form id="form-cle" method="get" action="127.0.0.1:3030/api/cle">
+            <h2>Récupération d'une clé api</h2>
+            <div>
+                <label for="courriel-cle">Votre courriel : </label>
+                <input type="email" name="courriel-cle" id="courriel-cle" placeholder="Votre courriel">
+            </div>
+            <div>
+                <label for="mdp-cle">Mot de passe : </label>
+                <input type="password" name="mdp-cle" id="mdp-cle" placeholder="*******">
+            </div>
+            <input type="checkbox" name="nouvelle-cle" id="nouvelle-cle">
+            <label for="nouvelle-cle">asdsadsa</label>
+            <div>
+                <button>Récupérer</button>
+            </div>
+        </form>
+    </div>
+
+
+    <!-- 
+    <fieldset class="invisible">
+        <legend>Modifier la tache</legend>
+        <div>
+            <label for="titre-modifier-tache">Titre : </label>
+            <input type="text" name="titre" id="titre-modifier-tache">
+        </div>
+        <div>
+            <label for="description-modifier-tache">Description : </label>
+            <input type="text" name="description" id="description-modifier-tache">
+        </div>
+        <div>
+            <label for="date_debut-modifier-tache">Date de début : </label>
+            <input type="date" name="date_debut" id="date_debut-modifier-tache">
+        </div>
+        <div>
+            <label for="date_echeance-modifier-tache">Date d'échéance : </label>
+            <input type="date" name="date_echeance" id="date_echeance-modifier-tache">
+        </div>
+        <div>
+            <label for="complete-modifier-tache">Complété : </label>
+            <input type="checkbox" name="complete" id="complete-modifier-tache">
+        </div>
+        <input type="number" class="invisible">
+        <button>Modifier tâche</button>
+    </fieldset>
+    <input type="text" id="input-cle-api" onclick="listerTaches()">
+    <input type="checkbox" id="input-tout-afficher" onclick="listerTaches()">
+    <ul id="liste-principal">
+        <li>chose</li>
+        <li>
+            <div>id</div>
+            <div>titre</div>
+            <div>description</div>
+            <div>date début</div>
+            <div>date échéance</div>
+            <ul>
+                <li>id</li>
+                <li>titre</li>
+                <li onclick="listerTaches()">✅❌</li>
+            </ul>
+        </li>
+    </ul>
+    -->
+</body>
+</html>

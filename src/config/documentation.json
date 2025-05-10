@@ -1,0 +1,1456 @@
+{
+    "openapi": "3.1.0",
+    "info" : {
+        "title": "Application liste de tâches",
+        "summary": "Une application permettant de simplifier sa gestion de tâches",
+        "description": "Une description plus détaillé de ce que fait votre API",
+        "contact": {
+            "name": "API Support",
+            "url": "https://www.jaiPasDeContactAOffrir.com/support",
+            "email": "morgan.bois@hotmail.fr"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:3000/",
+            "description": "Serveur de développement"
+        },
+        {
+            "url": "http://api.il-sera-pas-en-ligne.ca",
+            "description": "Serveur en ligne"
+        }
+    ],
+    "paths" : {
+        "/utilisateur/inscription" : {
+            "post": {
+                "description": "Inscription d'un nouvel utilisateur selon un courriel, un nom, un prénom, et un mot de passe",
+                "summary": "Inscription",
+                "tags": [ "utilisateur" ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "nom": {
+                                        "type": "string",
+                                        "example": "Allard"
+                                    },
+                                    "prenom": {
+                                        "type": "string",
+                                        "example": "Michel"
+                                    },
+                                    "courriel": {
+                                        "type": "string",
+                                        "example": "michel@site.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "guitar6"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Succès",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "cle_api": {
+                                            "type":"string",
+                                            "example":"DJmBXOZb5zbN75T4yyYuQiulcM1LHO"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Un ou des champs de la requête sont invalides",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "champs_invalides": {
+                                            "type":"array",
+                                            "example":["password"]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Échec de l'ajout de l'utilisateur. Le courriel doit être unique",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "erreur": {
+                                            "type":"string",
+                                            "example":"echec de l'ajout de l'utilisateur. le courriel doit être unique"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur du serveur.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "erreur": {
+                                            "type":"string",
+                                            "example":"erreur serveur"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/utilisateur/cle" : {
+            "post": {
+                "description": "Obtention ou regénération de la clé d'API selon le courriel et le mot de passe d'un utilisateur",
+                "summary": "Obtention et regénération de la clé d'API",
+                "tags": [ "utilisateur" ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "courriel": {
+                                        "type": "string",
+                                        "example": "michel@site.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "guitar7"
+                                    },
+                                    "regenerer": {
+                                        "type": "boolean",
+                                        "example": false
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Succès",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "cle_api": {
+                                            "type":"string",
+                                            "example":"DJmBXOZb5zbN75T4yyYuQiulcM1LHO"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Un ou des champs de la requête sont invalides",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "champs_invalides": {
+                                            "type":"array",
+                                            "example":["password"]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Authentification invalide",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "erreur": {
+                                            "type":"string",
+                                            "example":"authentification invalide"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Échec de la génération ou de l'obtention de la cle d'API",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "erreur": {
+                                            "type":"string",
+                                            "example":"echec de la generation de la cle api"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur du serveur.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "erreur": {
+                                            "type":"string",
+                                            "example":"erreur serveur"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/detail/{id}" : {
+            "get": {
+                "description": "Affiche les détails d'une tâche selon son ID.",
+                "summary": "Afficher les détails d'une tâche",
+                "tags": [ "tâche" ],
+                "parameters":[{
+                    "in": "path",
+                    "name": "id",
+                    "description": "ID de la tâche.",
+                    "required": true,
+                    "schema": {
+                        "type": "integer",
+                        "format": "int32",
+                        "example" : "1"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Succès",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "cle_api": {
+                                            "type":"string",
+                                            "example":"DJmBXOZb5zbN75T4yyYuQiulcM1LHO"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "L'ID est invalide.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "erreur": {
+                                            "type":"string",
+                                            "example":"id invalide"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Clé d'API invalide.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "erreur": {
+                                            "type":"string",
+                                            "example":"cle d'api invalide"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "La tâche de l'ID spécifié est inexistante.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "erreur": {
+                                            "type":"string",
+                                            "example":"tache inexistante"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur du serveur.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "erreur": {
+                                            "type":"string",
+                                            "example":"erreur serveur"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/liste" : {
+            "get": {
+                "description": "Affiche la liste des tâches. N'affiche que les tâches incomplétées par défaut.",
+                "summary": "Lister les tâches",
+                "tags": [ "tâche" ],
+                "parameters":[{
+                    "in": "query",
+                    "name": "toutes",
+                    "description": "Liste les tâches complétées.",
+                    "required": false,
+                    "schema": {
+                        "type": "boolean",
+                        "example" : false
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Succès",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "cle_api": {
+                                            "type":"array",
+                                            "example":[
+                                                {
+                                                    "id": 6,
+                                                    "titre": "Tâche 1",
+                                                    "description": "bla bla bla",
+                                                    "date_debut": "0001-01-01T05:17:32.000Z",
+                                                    "date_echeance": "2025-09-12T04:00:00.000Z",
+                                                    "complete": false,
+                                                    "sous_taches": [
+                                                        {
+                                                            "id": 20,
+                                                            "titre": "Sous tache 1",
+                                                            "complete": false
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "id": 10,
+                                                    "titre": "Tâche 2",
+                                                    "description": "bla bla bla bla",
+                                                    "date_debut": "0001-01-01T05:17:32.000Z",
+                                                    "date_echeance": "2025-09-12T04:00:00.000Z",
+                                                    "complete": false,
+                                                    "sous_taches": []
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Clé d'API invalide.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "erreur": {
+                                            "type":"string",
+                                            "example":"cle d'api invalide"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Il y a aucune tâches pour l'utilisateur.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "erreur": {
+                                            "type":"string",
+                                            "example":"aucune taches trouvees"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur du serveur.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "erreur": {
+                                            "type":"string",
+                                            "example":"erreur serveur"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/tache" : {
+            "post": {
+                "description": "Ajouter une tâche selon ses détails.",
+                "summary": "Ajouter une tâche",
+                "tags": [ "tâche" ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "titre": {
+                                        "type": "string",
+                                        "example": "Tâche"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Faire la tâche et tout."
+                                    },
+                                    "date_debut": {
+                                        "type": "date",
+                                        "example": "2025-05-15"
+                                    },
+                                    "date_echeance": {
+                                        "type": "date",
+                                        "example": "2025-06-15"
+                                    },
+                                    "complete": {
+                                        "type": "boolean",
+                                        "example": false
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Succès",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "id": {
+                                            "type":"number",
+                                            "example":10
+                                        },
+                                        "titre": {
+                                            "type":"string",
+                                            "example":"Tâche"
+                                        },
+                                        "description": {
+                                            "type":"string",
+                                            "example":"Description"
+                                        },
+                                        "date_debut": {
+                                            "type":"date",
+                                            "example":"2025-05-15"
+                                        },
+                                        "date_echeance": {
+                                            "type":"date",
+                                            "example":"2025-06-15"
+                                        },
+                                        "complete": {
+                                            "type":"boolean",
+                                            "example":true
+                                        },
+                                        "sous_taches": {
+                                            "type":"array",
+                                            "example":[]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Un ou des champs de la requête sont invalides",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "champs_invalides": {
+                                            "type":"array",
+                                            "example":["titre"]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Clé d'API invalide.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "erreur": {
+                                            "type":"string",
+                                            "example":"cle d'api invalide"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur du serveur.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "erreur": {
+                                            "type":"string",
+                                            "example":"erreur serveur"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Modifier une tâche selon son ID.",
+                "summary": "Modifier une tâche",
+                "tags": [ "tâche" ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "number",
+                                        "example": 23
+                                    },
+                                    "titre": {
+                                        "type": "string",
+                                        "example": "Tâche"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Faire la tâche et tout."
+                                    },
+                                    "date_debut": {
+                                        "type": "date",
+                                        "example": "2025-05-15"
+                                    },
+                                    "date_echeance": {
+                                        "type": "date",
+                                        "example": "2025-06-15"
+                                    },
+                                    "complete": {
+                                        "type": "boolean",
+                                        "example": false
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Succès",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "id": {
+                                            "type":"number",
+                                            "example":10
+                                        },
+                                        "titre": {
+                                            "type":"string",
+                                            "example":"Tâche"
+                                        },
+                                        "description": {
+                                            "type":"string",
+                                            "example":"Description"
+                                        },
+                                        "date_debut": {
+                                            "type":"date",
+                                            "example":"2025-05-15"
+                                        },
+                                        "date_echeance": {
+                                            "type":"date",
+                                            "example":"2025-06-15"
+                                        },
+                                        "complete": {
+                                            "type":"boolean",
+                                            "example":true
+                                        },
+                                        "sous_taches": {
+                                            "type":"array",
+                                            "example":[]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Un ou des champs de la requête sont invalides",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "champs_invalides": {
+                                            "type":"array",
+                                            "example":["titre"]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Clé d'API invalide.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "erreur": {
+                                            "type":"string",
+                                            "example":"cle d'api invalide"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Tâche inexistante.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "erreur": {
+                                            "type":"string",
+                                            "example":"tache inexistante"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur du serveur.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "erreur": {
+                                            "type":"string",
+                                            "example":"erreur serveur"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Supprimer une tâche selon son ID.",
+                "summary": "Supprimer une tâche",
+                "tags": [ "tâche" ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "number",
+                                        "example": 23
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Succès",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "id": {
+                                            "type":"number",
+                                            "example":10
+                                        },
+                                        "titre": {
+                                            "type":"string",
+                                            "example":"Tâche"
+                                        },
+                                        "description": {
+                                            "type":"string",
+                                            "example":"Description"
+                                        },
+                                        "date_debut": {
+                                            "type":"date",
+                                            "example":"2025-05-15"
+                                        },
+                                        "date_echeance": {
+                                            "type":"date",
+                                            "example":"2025-06-15"
+                                        },
+                                        "complete": {
+                                            "type":"boolean",
+                                            "example":true
+                                        },
+                                        "sous_taches": {
+                                            "type":"array",
+                                            "example":[]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Un ou des champs de la requête sont invalides",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "champs_invalides": {
+                                            "type":"array",
+                                            "example":["id"]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Clé d'API invalide.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "erreur": {
+                                            "type":"string",
+                                            "example":"cle d'api invalide"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Tâche inexistante.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "erreur": {
+                                            "type":"string",
+                                            "example":"tache inexistante"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur du serveur.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "erreur": {
+                                            "type":"string",
+                                            "example":"erreur serveur"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/tache/statut":{
+            "put": {
+                "description": "Modifier le statut d'une tâche selon son ID et le nouveau statut désiré.",
+                "summary": "Modifier le statut d'une tâche",
+                "tags": [ "tâche" ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "number",
+                                        "example": 23
+                                    },
+                                    "complete": {
+                                        "type": "boolean",
+                                        "example": true
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Succès",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "id": {
+                                            "type":"number",
+                                            "example":10
+                                        },
+                                        "tache_id": {
+                                            "type":"number",
+                                            "example":19
+                                        },
+                                        "titre": {
+                                            "type":"string",
+                                            "example":"Tâche"
+                                        },
+                                        "complete": {
+                                            "type":"boolean",
+                                            "example":true
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Un ou des champs de la requête sont invalides",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "champs_invalides": {
+                                            "type":"array",
+                                            "example":["id"]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Clé d'API invalide.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "erreur": {
+                                            "type":"string",
+                                            "example":"cle d'api invalide"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Tâche inexistante.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "erreur": {
+                                            "type":"string",
+                                            "example":"tache inexistante"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur du serveur.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "erreur": {
+                                            "type":"string",
+                                            "example":"erreur serveur"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/sous-tache" : {
+            "post": {
+                "description": "Ajouter une sous-tâche selon ses détails.",
+                "summary": "Ajouter une sous-tâche",
+                "tags": [ "sous-tâche" ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "number",
+                                        "example": 54
+                                    },
+                                    "titre": {
+                                        "type": "string",
+                                        "example": "Tâche"
+                                    },
+                                    "complete": {
+                                        "type": "boolean",
+                                        "example": true
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Succès",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "id": {
+                                            "type":"number",
+                                            "example":10
+                                        },
+                                        "tache_id": {
+                                            "type":"number",
+                                            "example":67
+                                        },
+                                        "titre": {
+                                            "type":"string",
+                                            "example":"Tâche"
+                                        },
+                                        "complete": {
+                                            "type":"boolean",
+                                            "example":true
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Un ou des champs de la requête sont invalides",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "champs_invalides": {
+                                            "type":"array",
+                                            "example":["titre"]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Clé d'API invalide.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "erreur": {
+                                            "type":"string",
+                                            "example":"cle d'api invalide"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Tâche inexistante.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "erreur": {
+                                            "type":"string",
+                                            "example":"tache inexistante"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur du serveur.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "erreur": {
+                                            "type":"string",
+                                            "example":"erreur serveur"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Modifier une sous-tâche selon son ID.",
+                "summary": "Modifier une sous-tâche",
+                "tags": [ "sous-tâche" ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "number",
+                                        "example": 23
+                                    },
+                                    "titre": {
+                                        "type": "string",
+                                        "example": "Sous-tâche"
+                                    },
+                                    "complete": {
+                                        "type": "boolean",
+                                        "example": true
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Succès",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "number",
+                                            "example": 23
+                                        },
+                                        "tache_id": {
+                                            "type": "number",
+                                            "example": 23
+                                        },
+                                        "titre": {
+                                            "type": "string",
+                                            "example": "Sous-tâche"
+                                        },
+                                        "complete": {
+                                            "type": "boolean",
+                                            "example": true
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Un ou des champs de la requête sont invalides",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "champs_invalides": {
+                                            "type":"array",
+                                            "example":["titre"]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Clé d'API invalide.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "erreur": {
+                                            "type":"string",
+                                            "example":"cle d'api invalide"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Tâche inexistante.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "erreur": {
+                                            "type":"string",
+                                            "example":"tache inexistante"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur du serveur.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "erreur": {
+                                            "type":"string",
+                                            "example":"erreur serveur"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Supprimer une sous-tâche selon son ID.",
+                "summary": "Supprimer une sous-tâche",
+                "tags": [ "sous-tâche" ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "number",
+                                        "example": 23
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Succès",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "number",
+                                            "example": 23
+                                        },
+                                        "tache_id": {
+                                            "type": "number",
+                                            "example": 23
+                                        },
+                                        "titre": {
+                                            "type": "string",
+                                            "example": "Sous-tâche"
+                                        },
+                                        "complete": {
+                                            "type": "boolean",
+                                            "example": true
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Un ou des champs de la requête sont invalides",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "champs_invalides": {
+                                            "type":"array",
+                                            "example":["id"]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Clé d'API invalide.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "erreur": {
+                                            "type":"string",
+                                            "example":"cle d'api invalide"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Tâche inexistante.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "erreur": {
+                                            "type":"string",
+                                            "example":"tache inexistante"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur du serveur.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "erreur": {
+                                            "type":"string",
+                                            "example":"erreur serveur"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/sous-tache/statut":{
+            "put": {
+                "description": "Modifier le statut d'une sous-tâche selon son ID et le nouveau statut désiré.",
+                "summary": "Modifier le statut d'une sous-tâche",
+                "tags": [ "sous-tâche" ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "number",
+                                        "example": 23
+                                    },
+                                    "complete": {
+                                        "type": "boolean",
+                                        "example": true
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Succès",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "id": {
+                                            "type":"number",
+                                            "example":10
+                                        },
+                                        "tache_id": {
+                                            "type":"number",
+                                            "example":101
+                                        },
+                                        "titre": {
+                                            "type":"string",
+                                            "example":"Ma sous-tâche"
+                                        },
+                                        "complete": {
+                                            "type":"boolean",
+                                            "example":true
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Un ou des champs de la requête sont invalides",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "champs_invalides": {
+                                            "type":"array",
+                                            "example":["id"]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Clé d'API invalide.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "erreur": {
+                                            "type":"string",
+                                            "example":"cle d'api invalide"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Tâche inexistante.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "erreur": {
+                                            "type":"string",
+                                            "example":"tache inexistante"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur du serveur.",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "erreur": {
+                                            "type":"string",
+                                            "example":"erreur serveur"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
